@@ -1,15 +1,23 @@
 package com.eadmin.building.service.service;
 
+
+import com.eadmin.building.service.VO.President;
+import com.eadmin.building.service.VO.ResponseTemplateVO;
 import com.eadmin.building.service.model.Building;
 import com.eadmin.building.service.repository.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BuildingService {
+
+            @Autowired
+            private RestTemplate restTemplate;
 
     @Autowired
     private BuildingRepository buildingRepository;
@@ -29,6 +37,24 @@ public class BuildingService {
     public List<Building> getBuildingByGroupId(Long id){
         return buildingRepository.findAllByGroupId(id);
     }
+
+
+    public List<ResponseTemplateVO> getBuildingsAndPresidentsByGroupId(Long groupId){
+
+        List<ResponseTemplateVO> result = new ArrayList<>();
+
+        List<Building> buildingsByGroup = buildingRepository.findAllByGroupId(groupId);
+
+        for(Building building : buildingsByGroup){
+            ResponseTemplateVO vo = new ResponseTemplateVO();
+            vo.setBuilding(building);
+            vo.setPresident(restTemplate.getForObject("http://USER-SERVICE/user/by-buildingId-and-role/" + building.getBuildingId() + "/PRESIDENT", President.class));
+            result.add(vo);
+        }
+
+        return result;
+    }
+
 
     public void deleteBuilding(Long id){
         buildingRepository.deleteByBuildingId(id);

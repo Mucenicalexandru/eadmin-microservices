@@ -1,17 +1,22 @@
 package com.eadmin.user.service.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="users", catalog = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public class User {
 
     @Id
@@ -36,7 +41,9 @@ public class User {
     private UserStatus userStatus;
     private Date joiningDate;
 
-    private UserRole role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
     private Long groupId;
     private Long buildingId;

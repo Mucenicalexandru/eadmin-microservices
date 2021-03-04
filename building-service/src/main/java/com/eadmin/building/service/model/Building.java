@@ -24,11 +24,9 @@ public class Building {
     private String number;
     private String town;
     private String country;
+    private String buildingName;
+    private String entrance;
 
     private Long noticeBoardId;
-
-    private Long presidentId;
-
-
 
 }

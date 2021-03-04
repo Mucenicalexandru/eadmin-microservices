@@ -27,10 +27,7 @@ public class Group {
     private String country;
 
     private String email;
-    private String IBAN;
-
-    private Long administratorId;
-    private Long censorId;
+    private String iban;
 
     private String picture;
 }

@@ -15,5 +15,10 @@ public class BuildingServiceApplication {
         SpringApplication.run(BuildingServiceApplication.class, args);
     }
 
+    @Bean
+    @LoadBalanced
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
 
 }

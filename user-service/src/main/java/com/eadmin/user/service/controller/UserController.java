@@ -1,7 +1,7 @@
 package com.eadmin.user.service.controller;
 
 import com.eadmin.user.service.model.User;
-import com.eadmin.user.service.model.UserRole;
+import com.eadmin.user.service.model.UserStatus;
 import com.eadmin.user.service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,28 +26,87 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/all-by-role/{role}")
+    private List<User> getAllUsersByRole(@PathVariable String role){
+        return userService.getUsersByRoles(role);
+    }
+
+    @GetMapping("/all-by-town/{town}")
+    public List<User> getUsersByTown(@PathVariable String town){
+        return userService.getUsersByTown(town);
+    }
+
+    @GetMapping("/by-group-and-role/{groupId}/{role}")
+    public User getUserByGroupAndRole(@PathVariable Long groupId, @PathVariable String role){
+        return userService.getUserByGroupAndRole(groupId, role);
+    }
+
+    @GetMapping("/by-buildingId-and-role/{buildingId}/{role}")
+    public User getUserByBuildingIdAndRole(@PathVariable Long buildingId, @PathVariable String role){
+        return userService.getUserByBuildingIdAndRole(buildingId, role);
+    }
+
+    @GetMapping("/pending/{groupId}")
+    public List<User> getPendingUsers(@PathVariable Long groupId){
+        return userService.getPendingUsersByGroupId(groupId, UserStatus.PENDING);
+    }
+
     @PostMapping("/")
-    public ResponseEntity<?> addUser(@RequestBody User user){
-        return userService.addUser(UserRole.USER, user);
+    public void addUser(@RequestBody User user){
+         userService.addUser("USER", user);
     }
 
-    @PostMapping("/president")
+    @PostMapping("/admin")
+    public void addAdmin(@RequestBody User user){
+        userService.addUser("ADMIN", user);
+    }
+
+    @PostMapping("/add-president")
     public ResponseEntity<?> addPresident(@RequestBody User user){
-        return userService.addUser(UserRole.PRESIDENT, user);
+        return userService.addWorkingMembers("PRESIDENT", user);
     }
 
-    @PostMapping("/administrator")
+    @PostMapping("/add-administrator")
     public ResponseEntity<?> addAdministrator(@RequestBody User user){
-        return userService.addUser(UserRole.ADMINISTRATOR, user);
+        return userService.addWorkingMembers("ADMINISTRATOR", user);
     }
 
-    @PostMapping("/censor")
+    @PostMapping("/add-censor")
     public ResponseEntity<?> addCensor(@RequestBody User user){
-        return userService.addUser(UserRole.CENSOR, user);
+        return userService.addWorkingMembers("CENSOR", user);
     }
 
-    @PostMapping("/service-provider")
+    @PostMapping("/add-service-provider")
     public ResponseEntity<?> addServiceProvider(@RequestBody User user){
-        return userService.addUser(UserRole.SERVICE_PROVIDER, user);
+        return userService.addUser("SERVICE_PROVIDER", user);
+    }
+
+    @PutMapping("/edit/{userId}")
+    public ResponseEntity<User> editUser(@PathVariable Long userId, @RequestBody User user){
+        User userToUpdate = userService.getUserById(userId);
+
+        userToUpdate.setFirstName(user.getFirstName());
+        userToUpdate.setLastName(user.getLastName());
+        userToUpdate.setPhone(user.getPhone());
+
+        return userService.saveUser(userToUpdate);
+    }
+
+    @PutMapping("/accept-request/{userId}")
+    public ResponseEntity<User> acceptUser(@PathVariable Long userId){
+        User userToUpdate = userService.getUserById(userId);
+
+        userToUpdate.setUserStatus(UserStatus.ACCEPTED);
+
+        return userService.saveUser(userToUpdate);
+    }
+
+    @PutMapping("/reject-request/{userId}")
+    public ResponseEntity<User> rejectUser(@PathVariable Long userId){
+        User userToUpdate = userService.getUserById(userId);
+
+        userToUpdate.setUserStatus(UserStatus.REJECTED);
+
+        return userService.saveUser(userToUpdate);
     }
 }
