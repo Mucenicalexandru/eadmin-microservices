@@ -16,8 +16,8 @@ import java.util.List;
 @Service
 public class BuildingService {
 
-            @Autowired
-            private RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private BuildingRepository buildingRepository;
@@ -51,6 +51,18 @@ public class BuildingService {
             vo.setPresident(restTemplate.getForObject("http://USER-SERVICE/user/by-buildingId-and-role/" + building.getBuildingId() + "/PRESIDENT", President.class));
             result.add(vo);
         }
+
+        return result;
+    }
+
+    public ResponseTemplateVO getBuildingsAndPresidentsByBuildingId(Long buildingId){
+
+        ResponseTemplateVO result = new ResponseTemplateVO();
+
+        Building building = buildingRepository.findByBuildingId(buildingId);
+        result.setPresident(restTemplate.getForObject("http://USER-SERVICE/user/by-buildingId-and-role/" + buildingId + "/PRESIDENT", President.class));
+        result.setBuilding(building);
+
 
         return result;
     }

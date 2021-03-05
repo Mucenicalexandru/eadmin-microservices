@@ -67,12 +67,16 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<User> getUsersByTown(String town){return userRepository.findAllByRolesAndTown("USER", town);}
+    public List<User> getUsersByRoleAndTown(String role, String town){return userRepository.findAllByRolesAndTown(role, town);}
 
     public List<User> getUsersByRoles(String role){return userRepository.findAllByRoles(role);}
 
     public User getUserByGroupAndRole(Long groupId, String role){
         return userRepository.findByGroupIdAndRoles(groupId, role);
+    }
+
+    public List<User> getProvidersByTownAndDepartment(String town, String department){
+        return userRepository.findAllByRolesAndTownAndDepartment("SERVICE_PROVIDERS", town, department);
     }
 
     public User getUserByBuildingIdAndRole(Long buildingId, String role){

@@ -1,11 +1,16 @@
 package com.eadmin.ticket.service.service;
 
+import com.eadmin.ticket.service.VO.PendingOffer;
+import com.eadmin.ticket.service.VO.ResponseTemplateVO;
+import com.eadmin.ticket.service.VO.User;
 import com.eadmin.ticket.service.model.Ticket;
 import com.eadmin.ticket.service.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,6 +19,9 @@ public class TicketService {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     public List<Ticket> getAllTickets(){
         return ticketRepository.findAll();
@@ -40,12 +48,81 @@ public class TicketService {
         return ticketRepository.findAllByDepartmentAndTownAndStatus(department, town, status);
     }
 
-    public ResponseEntity<Ticket> addTicket(Ticket ticket){
+
+
+    public ResponseEntity<Ticket> addTicket(Ticket ticket, String status){
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         ticket.setDateOpened(currentDate);
-        ticket.setStatus("opened");
+        ticket.setStatus(status);
 
         ticketRepository.save(ticket);
         return ResponseEntity.ok().build();
+    }
+
+    public List<ResponseTemplateVO> getTicketsByDepartmentAndTownWithPendingOffersInfo(String department, String town){
+        List<ResponseTemplateVO> result = new ArrayList<>();
+
+        List<Ticket> ticketList = ticketRepository.findAllByDepartmentAndTownAndStatus(department, town, "opened");
+
+        for(Ticket ticket : ticketList){
+            ResponseTemplateVO vo = new ResponseTemplateVO();
+            vo.setTicket(ticket);
+            vo.setPendingOffer(restTemplate.getForObject("http://PENDINGOFFER-SERVICE/pending-offer/" + ticket.getTicketId(), PendingOffer[].class));
+            result.add(vo);
+        }
+
+        return result;
+    }
+
+    public List<ResponseTemplateVO> getAllByGroupWithPendingOffersInfo(Long groupId){
+        List<ResponseTemplateVO> result = new ArrayList<>();
+
+        List<Ticket> ticketList = ticketRepository.findAllByGroupId(groupId);
+
+        for(Ticket ticket : ticketList){
+            ResponseTemplateVO vo = new ResponseTemplateVO();
+            vo.setTicket(ticket);
+            vo.setPendingOffer(restTemplate.getForObject("http://PENDINGOFFER-SERVICE/pending-offer/" + ticket.getTicketId(), PendingOffer[].class));
+            result.add(vo);
+        }
+
+        return result;
+    }
+
+    public List<ResponseTemplateVO> getTicketsByGroupAndStatus(Long groupId, String status, String type){
+        List<ResponseTemplateVO> result = new ArrayList<>();
+
+        List<Ticket> ticketList = ticketRepository.findAllByGroupIdAndStatusAndType(groupId, status, type);
+
+        for(Ticket ticket : ticketList){
+            ResponseTemplateVO vo = new ResponseTemplateVO();
+            vo.setTicket(ticket);
+            vo.setPendingOffer(restTemplate.getForObject("http://PENDINGOFFER-SERVICE/pending-offer/" + ticket.getTicketId(), PendingOffer[].class));
+            result.add(vo);
+        }
+
+        return result;
+    }
+
+
+    public ResponseTemplateVO getTicketByIdWithPendingOfferInfo(Long ticketId){
+        ResponseTemplateVO result = new ResponseTemplateVO();
+
+        Ticket ticket = ticketRepository.findByTicketId(ticketId);
+        PendingOffer[] pendingOfferList = restTemplate.getForObject("http://PENDINGOFFER-SERVICE/pending-offer/" + ticket.getTicketId(), PendingOffer[].class);
+
+        for(PendingOffer pending : pendingOfferList){
+            User user = restTemplate.getForObject("http://USER-SERVICE/user/" + pending.getServiceProviderUserId(), User.class);
+
+            pending.setServiceProviderFirstName(user.getFirstName());
+            pending.setServiceProviderLastName(user.getLastName());
+            pending.setServiceProviderPhone(user.getPhone());
+            pending.setServiceProviderEmail(user.getEmail());
+        }
+
+        result.setTicket(ticket);
+        result.setPendingOffer(pendingOfferList);
+
+        return result;
     }
 }

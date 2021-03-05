@@ -99,9 +99,11 @@ public class UserAuthController {
                 model.put("token", token);
 
                 return ResponseEntity.ok(model);
-            }else if(activeUser.getRoles().contains("PROVIDER")) {
+            }else if(activeUser.getRoles().contains("SERVICE_PROVIDER")) {
                 String email = user.getEmail();
                 Long id = userRepository.findByEmail(email).getUserId();
+                String department = userRepository.findByEmail(email).getDepartment();
+                String town = userRepository.findByEmail(email).getTown();
                 // authenticationManager.authenticate calls loadUserByUsername in CustomUserDetailsService
                 Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, user.getPassword()));
                 List<String> roles = authentication.getAuthorities()
@@ -110,12 +112,15 @@ public class UserAuthController {
                         .collect(Collectors.toList());
 
 
-                String token = jwtTokenServices.createAdminToken(email, roles, id);
+                String token = jwtTokenServices.createProviderToken(email, roles, id, department, town);
 
                 Map<Object, Object> model = new HashMap<>();
                 model.put("email", email);
                 model.put("roles", roles);
                 model.put("token", token);
+                model.put("town", town);
+                model.put("department", department);
+
 
                 return ResponseEntity.ok(model);
             }else{

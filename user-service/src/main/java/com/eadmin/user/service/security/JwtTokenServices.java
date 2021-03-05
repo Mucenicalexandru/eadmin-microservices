@@ -34,6 +34,8 @@ public class JwtTokenServices {
     private final String userId = "userId";
     private final String buildingId = "buildingId";
     private final String groupId = "groupId";
+    private final String providerDepartment = "department";
+    private final String providerTown = "town";
 
     // Creates a JWT token
     public String createToken(String username, List<String> roles, Long id, Long building, Long group) {
@@ -90,12 +92,13 @@ public class JwtTokenServices {
                 .compact();
     }
 
-    public String createPresidentToken(String username, List<String> roles, Long id, Long building) {
+    public String createProviderToken(String username, List<String> roles, Long id, String department, String town) {
         // Add a custom field to the token
         Claims claims = Jwts.claims().setSubject(username);
         claims.put(rolesFieldName, roles);
         claims.put(userId, id);
-        claims.put(buildingId, building);
+        claims.put(providerDepartment, department);
+        claims.put(providerTown, town);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);

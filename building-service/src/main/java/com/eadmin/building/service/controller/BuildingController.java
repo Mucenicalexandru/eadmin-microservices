@@ -4,7 +4,6 @@ import com.eadmin.building.service.VO.ResponseTemplateVO;
 import com.eadmin.building.service.model.Building;
 import com.eadmin.building.service.service.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +35,12 @@ public class BuildingController {
     public List<ResponseTemplateVO> getBuildingsAndPresidentsByGroupId(@PathVariable Long groupId){
         return buildingService.getBuildingsAndPresidentsByGroupId(groupId);
     }
+
+    @GetMapping("/building-and-president/{buildingId}")
+    public ResponseTemplateVO getBuildingAndPresident(@PathVariable Long buildingId){
+        return buildingService.getBuildingsAndPresidentsByBuildingId(buildingId);
+    }
+
 
     @PostMapping("/add")
     public Building addBuilding(@RequestBody Building building){

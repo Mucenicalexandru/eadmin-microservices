@@ -33,7 +33,17 @@ public class UserController {
 
     @GetMapping("/all-by-town/{town}")
     public List<User> getUsersByTown(@PathVariable String town){
-        return userService.getUsersByTown(town);
+        return userService.getUsersByRoleAndTown("USER", town);
+    }
+
+    @GetMapping("/providers-by/{town}")
+    public List<User> getProvidersByTown(@PathVariable String town){
+        return userService.getUsersByRoleAndTown("SERVICE_PROVIDER", town);
+    }
+
+    @GetMapping("/providers-by/{town}/{department}")
+    public List<User> getProvidersByTown(@PathVariable String town, @PathVariable String department){
+        return userService.getProvidersByTownAndDepartment(town, department);
     }
 
     @GetMapping("/by-group-and-role/{groupId}/{role}")
