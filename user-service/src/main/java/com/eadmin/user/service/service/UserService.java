@@ -1,5 +1,7 @@
 package com.eadmin.user.service.service;
 
+import com.eadmin.user.service.VO.ResponseTemplateVO;
+import com.eadmin.user.service.VO.Review;
 import com.eadmin.user.service.model.User;
 import com.eadmin.user.service.model.UserStatus;
 import com.eadmin.user.service.repository.UserRepository;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -19,6 +22,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -90,6 +96,33 @@ public class UserService {
 
     public List<User> getPendingUsersByGroupId(Long groupId, UserStatus userStatus){
         return userRepository.findAllByGroupIdAndUserStatus(groupId, userStatus);
+    }
+
+    public ResponseTemplateVO getProviderWithReviews(Long providerId){
+        ResponseTemplateVO response = new ResponseTemplateVO();
+
+        int totalStars = 0;
+
+
+        User provider = userRepository.findUserByUserId(providerId);
+        response.setUser(provider);
+
+        Review [] reviews = restTemplate.getForObject("http://REVIEW-SERVICE/review/by-provider/" + providerId, Review[].class);
+
+        assert reviews != null;
+        response.setTotalReviews(reviews.length);
+
+        for(Review review : reviews){
+            totalStars += review.getStarNumber();
+        }
+
+        if(reviews.length != 0){
+            response.setAverageStars(totalStars / reviews.length);
+        }
+
+
+        return response;
+
     }
 
 }

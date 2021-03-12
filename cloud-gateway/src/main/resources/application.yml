@@ -31,6 +31,10 @@ spring:
           uri: lb://PENDINGOFFER-SERVICE
           predicates:
               - Path=/pending-offer/**
+        - id: REVIEW-SERVICE
+          uri: lb://REVIEW-SERVICE
+          predicates:
+              - Path=/review/**
 
 eureka:
   client:

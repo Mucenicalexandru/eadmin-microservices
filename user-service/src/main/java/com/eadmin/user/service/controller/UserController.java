@@ -1,5 +1,6 @@
 package com.eadmin.user.service.controller;
 
+import com.eadmin.user.service.VO.ResponseTemplateVO;
 import com.eadmin.user.service.model.User;
 import com.eadmin.user.service.model.UserStatus;
 import com.eadmin.user.service.service.UserService;
@@ -59,6 +60,11 @@ public class UserController {
     @GetMapping("/pending/{groupId}")
     public List<User> getPendingUsers(@PathVariable Long groupId){
         return userService.getPendingUsersByGroupId(groupId, UserStatus.PENDING);
+    }
+
+    @GetMapping("/provider-with-reviews/{providerId}")
+    public ResponseTemplateVO getProviderWithReviews(@PathVariable Long providerId){
+        return userService.getProviderWithReviews(providerId);
     }
 
     @PostMapping("/")

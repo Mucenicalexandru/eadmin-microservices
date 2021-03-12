@@ -60,7 +60,10 @@ public class BuildingService {
         ResponseTemplateVO result = new ResponseTemplateVO();
 
         Building building = buildingRepository.findByBuildingId(buildingId);
+
         result.setPresident(restTemplate.getForObject("http://USER-SERVICE/user/by-buildingId-and-role/" + buildingId + "/PRESIDENT", President.class));
+
+
         result.setBuilding(building);
 
 

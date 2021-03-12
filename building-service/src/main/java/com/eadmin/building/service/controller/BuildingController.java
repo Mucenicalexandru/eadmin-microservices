@@ -17,6 +17,7 @@ public class BuildingController {
 
     @GetMapping("/get-all")
     public List<Building> getBuildings(){
+
         return buildingService.getBuildings();
     }
 

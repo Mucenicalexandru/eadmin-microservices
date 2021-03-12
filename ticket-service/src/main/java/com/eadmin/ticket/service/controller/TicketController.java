@@ -65,7 +65,7 @@ public class TicketController {
 
     @GetMapping("/all-by-group-and-status-with-pending-offers/{groupId}/{status}")
     public List<ResponseTemplateVO> getTicketsByGroupAndStatus(@PathVariable Long groupId, @PathVariable String status){
-        return ticketService.getTicketsByGroupAndStatus(groupId, status, "Administrative");
+        return ticketService.getTicketsByGroupAndStatusWithPendingOffers(groupId, status, "Administrative");
     }
 
     @PostMapping("/add")
@@ -83,5 +83,15 @@ public class TicketController {
         ticketToUpdate.setTotalPrice(pendingOffer.getServiceProviderPrice());
 
         return ticketService.addTicket(ticketToUpdate, "in progress");
+    }
+
+    @PutMapping("/close/{ticketId}")
+    public ResponseEntity<Ticket> closeTicket(@PathVariable Long ticketId){
+        Ticket ticketToUpdate = ticketService.getTicketById(ticketId);
+        java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+
+        ticketToUpdate.setDateClosed(currentDate);
+
+        return ticketService.addTicket(ticketToUpdate, "closed");
     }
 }
