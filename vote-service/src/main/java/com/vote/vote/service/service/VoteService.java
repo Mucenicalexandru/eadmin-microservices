@@ -16,4 +16,8 @@ public class VoteService {
     public List<Vote> getAllVotesByPollId(Long pollId){
         return voteRepository.findAllByPollId(pollId);
     }
+
+    public void addVote(Vote vote){
+        voteRepository.save(vote);
+    }
 }

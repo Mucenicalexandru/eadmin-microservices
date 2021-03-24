@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -39,6 +40,11 @@ public class PollController {
     @GetMapping("/get-all-filter/{buildingId}/{status}")
     public List<Poll> getTicketsByBuildingAndStatus(@PathVariable Long buildingId, @PathVariable  String status){
         return pollService.getTicketsByBuildingAndStatus(buildingId, status);
+    }
+
+    @GetMapping("/results/{pollId}")
+    public HashMap<String, Integer> getResults(@PathVariable Long pollId){
+        return pollService.getResults(pollId);
     }
 
 
