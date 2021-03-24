@@ -42,6 +42,11 @@ public class BuildingController {
         return buildingService.getBuildingsAndPresidentsByBuildingId(buildingId);
     }
 
+    @GetMapping("/with-president-and-poll-and-tickets/{buildingId}")
+    public ResponseTemplateVO getBuildingWithPresidentTicketsAndPolls(@PathVariable Long buildingId){
+        return buildingService.getBuildingsWithPresidentAndTicketsAndPolls(buildingId);
+    }
+
 
     @PostMapping("/add")
     public Building addBuilding(@RequestBody Building building){

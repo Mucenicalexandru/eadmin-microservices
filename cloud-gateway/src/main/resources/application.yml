@@ -35,6 +35,10 @@ spring:
           uri: lb://REVIEW-SERVICE
           predicates:
               - Path=/review/**
+        - id: VOTE-SERVICE
+          uri: lb://VOTE-SERVICE
+          predicates:
+            - Path=/vote/**
 
 eureka:
   client:

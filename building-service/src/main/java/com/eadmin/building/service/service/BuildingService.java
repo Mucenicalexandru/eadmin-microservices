@@ -1,8 +1,10 @@
 package com.eadmin.building.service.service;
 
 
+import com.eadmin.building.service.VO.Poll;
 import com.eadmin.building.service.VO.President;
 import com.eadmin.building.service.VO.ResponseTemplateVO;
+import com.eadmin.building.service.VO.Ticket;
 import com.eadmin.building.service.model.Building;
 import com.eadmin.building.service.repository.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -66,6 +69,26 @@ public class BuildingService {
 
         result.setBuilding(building);
 
+
+        return result;
+    }
+
+    public ResponseTemplateVO getBuildingsWithPresidentAndTicketsAndPolls(Long buildingId){
+        ResponseTemplateVO result = new ResponseTemplateVO();
+
+        Building building = buildingRepository.findByBuildingId(buildingId);
+        result.setBuilding(building);
+
+        result.setPresident(restTemplate.getForObject("http://USER-SERVICE/user/by-buildingId-and-role/" + buildingId + "/PRESIDENT", President.class));
+
+
+        Ticket[] tickets = (restTemplate.getForObject("http://TICKET-SERVICE/ticket/" + buildingId, Ticket[].class));
+        assert tickets != null;
+        result.setTicketList(Arrays.asList(tickets));
+
+        Poll[] polls = (restTemplate.getForObject("http://POLL-SERVICE/poll/all-by-building/" + buildingId, Poll[].class));
+        assert polls != null;
+        result.setPollList(Arrays.asList(polls));
 
         return result;
     }

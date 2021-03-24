@@ -4,7 +4,9 @@ import com.edmin.review.service.model.Review;
 import com.edmin.review.service.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -24,4 +26,6 @@ public class ReviewService {
     public List<Review> getAllByProviderId(Long providerId){
         return reviewRepository.findAllByProviderId(providerId);
     }
+
+
 }

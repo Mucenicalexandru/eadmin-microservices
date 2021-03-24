@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -82,7 +82,7 @@ public class UserService {
     }
 
     public List<User> getProvidersByTownAndDepartment(String town, String department){
-        return userRepository.findAllByRolesAndTownAndDepartment("SERVICE_PROVIDERS", town, department);
+        return userRepository.findAllByRolesAndTownAndDepartment("SERVICE_PROVIDER", town, department);
     }
 
     public User getUserByBuildingIdAndRole(Long buildingId, String role){
@@ -102,6 +102,12 @@ public class UserService {
         ResponseTemplateVO response = new ResponseTemplateVO();
 
         int totalStars = 0;
+        HashMap<Integer, Integer> eachStarTotalNumber = new HashMap<>();
+        eachStarTotalNumber.put(1, 0);
+        eachStarTotalNumber.put(2, 0);
+        eachStarTotalNumber.put(3, 0);
+        eachStarTotalNumber.put(4, 0);
+        eachStarTotalNumber.put(5, 0);
 
 
         User provider = userRepository.findUserByUserId(providerId);
@@ -114,10 +120,24 @@ public class UserService {
 
         for(Review review : reviews){
             totalStars += review.getStarNumber();
+            if(review.getStarNumber() == 1){
+                eachStarTotalNumber.put(1, eachStarTotalNumber.get(1) + 1);
+            }else if(review.getStarNumber() == 2){
+                eachStarTotalNumber.put(2, eachStarTotalNumber.get(2) + 1);
+            }else if(review.getStarNumber() == 3){
+                eachStarTotalNumber.put(3, eachStarTotalNumber.get(3) + 1);
+            }else if(review.getStarNumber() == 4){
+                eachStarTotalNumber.put(4, eachStarTotalNumber.get(4) + 1);
+            }else if(review.getStarNumber() == 5){
+                eachStarTotalNumber.put(5, eachStarTotalNumber.get(5) + 1);
+            }
         }
 
+        response.setStarStatistics(eachStarTotalNumber);
+
         if(reviews.length != 0){
-            response.setAverageStars(totalStars / reviews.length);
+            float reviewLength = (float) reviews.length;
+            response.setAverageStars(totalStars / reviewLength);
         }
 
 

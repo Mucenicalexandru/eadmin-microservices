@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -12,5 +14,6 @@ public class ResponseTemplateVO {
 
     private User user;
     private int totalReviews;
-    private int averageStars;
+    private float averageStars;
+    private HashMap<Integer, Integer> starStatistics = new HashMap<>();
 }

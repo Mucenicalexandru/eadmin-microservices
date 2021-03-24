@@ -25,7 +25,9 @@ public class Review {
     private String review;
     private Date date;
 
-    private Long userId;
+    //firstName and lastName will remain even if an user will be deleted from the application
+    private String givingUserFirstName;
+    private String givingUserLastName;
 
 
 }
