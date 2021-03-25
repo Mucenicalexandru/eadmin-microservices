@@ -58,9 +58,9 @@ public class TicketController {
         return ticketService.getTicketByIdWithPendingOfferInfo(ticketId);
     }
 
-    @GetMapping("/all-by-group-with-pending-offers/{groupId}")
-    public List<ResponseTemplateVO> getAllByGroupWithPendingOffersInfo(@PathVariable Long groupId){
-        return ticketService.getAllByGroupWithPendingOffersInfo(groupId);
+    @GetMapping("/all-by-group-with-pending-offers/{groupId}/{status}/{type}")
+    public List<ResponseTemplateVO> getAllByGroupWithPendingOffersInfo(@PathVariable Long groupId, @PathVariable String status, @PathVariable String type){
+        return ticketService.getAllByGroupWithPendingOffersInfo(groupId, status, type);
     }
 
     @GetMapping("/all-by-group-and-status-with-pending-offers/{groupId}/{status}")

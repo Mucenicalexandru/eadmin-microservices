@@ -7,6 +7,7 @@ import com.example.eadmin.poll.service.model.Poll;
 import com.example.eadmin.poll.service.repository.PollRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

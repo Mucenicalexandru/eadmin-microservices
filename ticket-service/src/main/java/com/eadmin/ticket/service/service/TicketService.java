@@ -74,10 +74,10 @@ public class TicketService {
         return result;
     }
 
-    public List<ResponseTemplateVO> getAllByGroupWithPendingOffersInfo(Long groupId){
+    public List<ResponseTemplateVO> getAllByGroupWithPendingOffersInfo(Long groupId, String status, String type){
         List<ResponseTemplateVO> result = new ArrayList<>();
 
-        List<Ticket> ticketList = ticketRepository.findAllByGroupId(groupId);
+        List<Ticket> ticketList = ticketRepository.findAllByGroupIdAndStatusAndType(groupId, status, type);
 
         for(Ticket ticket : ticketList){
             ResponseTemplateVO vo = new ResponseTemplateVO();

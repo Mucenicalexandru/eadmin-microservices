@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+// class serves as a controller in Spring MVC
 @RequestMapping("/building")
 public class BuildingController {
 
