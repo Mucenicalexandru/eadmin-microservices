@@ -125,4 +125,22 @@ public class TicketService {
 
         return result;
     }
+
+    public void deleteTicketsByBuildingId(Long buildingId){
+        List<Ticket> ticketsToDelete = ticketRepository.findAllByBuildingId(buildingId);
+
+        for(Ticket ticket : ticketsToDelete){
+            ticketRepository.deleteById(ticket.getTicketId());
+            restTemplate.delete("http://PENDINGOFFER-SERVICE/pending-offer/all/" + ticket.getTicketId());
+        }
+    }
+
+    public void deleteTicketsByGroupId(Long groupId){
+        List<Ticket> ticketsToDelete = ticketRepository.findAllByGroupId(groupId);
+
+        for(Ticket ticket : ticketsToDelete){
+            ticketRepository.deleteById(ticket.getTicketId());
+            restTemplate.delete("http://PENDINGOFFER-SERVICE/pending-offer/all/" + ticket.getTicketId());
+        }
+    }
 }

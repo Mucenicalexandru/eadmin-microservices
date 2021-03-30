@@ -61,4 +61,9 @@ public class PollController {
         pollService.addPoll(pollToUpdate, "inactive");
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/delete-by-building/{buildingId}")
+    public void deleteAllByBuildingId(@PathVariable Long buildingId){
+        pollService.deletePollByBuildingId(buildingId);
+    }
 }

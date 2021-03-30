@@ -93,9 +93,25 @@ public class BuildingService {
         return result;
     }
 
+    public void deleteBuildingById(Long buildingId){
+        String ticketUrl = "http://TICKET-SERVICE/ticket/delete-all-by-building/" + buildingId;
+        String userUrl = "http://USER-SERVICE/user/delete-by-building/" + buildingId;
+        String pollUrl = "http://POLL-SERVICE/poll/delete-by-building/" + buildingId;
 
-    public void deleteBuilding(Long id){
-        buildingRepository.deleteByBuildingId(id);
+        restTemplate.delete(ticketUrl);
+        restTemplate.delete(userUrl);
+        restTemplate.delete(pollUrl);
+        buildingRepository.deleteById(buildingId);
+    }
+
+    public void deleteAllBuildingsByGroupId(Long groupId){
+        List<Building> buildingsToDelete = buildingRepository.findAllByGroupId(groupId);
+
+        for(Building building : buildingsToDelete){
+            buildingRepository.deleteById(building.getBuildingId());
+            restTemplate.delete("http://POLL-SERVICE/poll/delete-by-building/" + building.getBuildingId());
+        }
+
     }
 
 

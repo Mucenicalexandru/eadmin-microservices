@@ -14,9 +14,6 @@ public class PendingServiceOfferService {
     @Autowired
     private PendingServiceOfferRepository pendingServiceOfferRepository;
 
-    public List<PendingServiceOffer> getAll(){
-        return pendingServiceOfferRepository.findAll();
-    }
 
     public List<PendingServiceOffer> getAllByTicketId(Long ticketId){
         return pendingServiceOfferRepository.findAllByTicketId(ticketId);

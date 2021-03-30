@@ -65,6 +65,13 @@ public class UserService {
         return ResponseEntity.ok().build();
     }
 
+    public List<User> getAllUsersByGroupId(Long groupId){
+        return userRepository.findAllByGroupId(groupId);
+    }
+
+    public List<User> getAllUsersByBuildingId(Long buildingId){
+        return userRepository.findAllByBuildingId(buildingId);
+    }
 
     public User getUserById(Long id){
         return userRepository.findUserByUserId(id);
@@ -80,10 +87,6 @@ public class UserService {
 
     public User getUserByGroupAndRole(Long groupId, String role){
         return userRepository.findByGroupIdAndRoles(groupId, role);
-    }
-
-    public List<User> getProvidersByTownAndDepartment(String town, String department){
-        return userRepository.findAllByRolesAndTownAndDepartment("SERVICE_PROVIDER", town, department);
     }
 
     public User getUserByBuildingIdAndRole(Long buildingId, String role){
@@ -191,6 +194,22 @@ public class UserService {
 
         return responseList;
 
+    }
+
+    public void deleteUsersByGroupId(Long groupId){
+        List<User> usersToDelete = userRepository.findAllByGroupId(groupId);
+
+        for(User user : usersToDelete){
+            userRepository.deleteById(user.getUserId());
+        }
+    }
+
+    public void deleteUsersByBuildingId(Long buildingId){
+        List<User> usersToDelete = userRepository.findAllByBuildingId(buildingId);
+
+        for(User user : usersToDelete){
+            userRepository.deleteById(user.getUserId());
+        }
     }
 
 }

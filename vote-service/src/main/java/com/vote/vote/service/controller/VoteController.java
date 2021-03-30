@@ -25,4 +25,9 @@ public class VoteController {
         voteService.addVote(vote);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/delete-by-poll/{pollId}")
+    public void deleteAllByPollId(@PathVariable Long pollId){
+        voteService.deleteAllByPollId(pollId);
+    }
 }

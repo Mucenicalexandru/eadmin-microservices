@@ -10,6 +10,5 @@ import java.util.List;
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
     Group getByGroupId(Long id);
-    void deleteByGroupId(Long id);
     List<Group> findAllByTown(String town);
 }

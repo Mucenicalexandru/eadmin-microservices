@@ -54,4 +54,13 @@ public class BuildingController {
         return buildingService.addBuilding(building);
     }
 
+    @DeleteMapping("/delete-by-buildingId/{buildingId}")
+    public void deleteByBuildingId(@PathVariable Long buildingId){
+        buildingService.deleteBuildingById(buildingId);
+    }
+
+    @DeleteMapping("/delete-all-by-group/{groupId}")
+    public void deleteAllBuildingsByGroupId(@PathVariable Long groupId){
+        buildingService.deleteAllBuildingsByGroupId(groupId);
+    }
 }

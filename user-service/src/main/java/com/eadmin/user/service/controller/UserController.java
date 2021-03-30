@@ -131,4 +131,14 @@ public class UserController {
 
         return userService.saveUser(userToUpdate);
     }
+
+    @DeleteMapping("/delete-by-group/{groupId}")
+    public void deleteAllUsersByGroupId(@PathVariable Long groupId){
+        userService.deleteUsersByGroupId(groupId);
+    }
+
+    @DeleteMapping("/delete-by-building/{buildingId}")
+    public void deleteAllUsersByBuildingId(@PathVariable Long buildingId){
+        userService.deleteUsersByBuildingId(buildingId);
+    }
 }

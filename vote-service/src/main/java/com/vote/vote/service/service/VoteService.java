@@ -20,4 +20,12 @@ public class VoteService {
     public void addVote(Vote vote){
         voteRepository.save(vote);
     }
+
+    public void deleteAllByPollId(Long pollId){
+        List<Vote> votesToDelete = voteRepository.findAllByPollId(pollId);
+
+        for(Vote vote : votesToDelete){
+            voteRepository.deleteById(vote.getVoteId());
+        }
+    }
 }

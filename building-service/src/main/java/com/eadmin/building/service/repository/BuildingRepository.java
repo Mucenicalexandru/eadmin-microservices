@@ -11,6 +11,5 @@ import java.util.List;
 public interface BuildingRepository extends JpaRepository<Building, Long> {
 
     Building findByBuildingId(Long id);
-    void deleteByBuildingId(Long id);
     List<Building> findAllByGroupId(Long id);
 }

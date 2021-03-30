@@ -102,4 +102,14 @@ public class PollService {
         poll.setStatus(status);
         pollRepository.save(poll);
     }
+
+    public void deletePollByBuildingId(Long buildingId){
+        List<Poll> pollsToDelete = pollRepository.findAllByBuildingId(buildingId);
+
+        for(Poll poll : pollsToDelete){
+            pollRepository.deleteById(poll.getPollId());
+            restTemplate.delete("http://VOTE-SERVICE/vote/delete-by-poll/" + poll.getPollId());
+        }
+
+    }
 }
