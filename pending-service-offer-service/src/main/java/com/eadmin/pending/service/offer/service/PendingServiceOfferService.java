@@ -22,9 +22,8 @@ public class PendingServiceOfferService {
         return pendingServiceOfferRepository.findAllByTicketId(ticketId);
     }
 
-    public ResponseEntity<PendingServiceOffer> addOffer(PendingServiceOffer pendingServiceOffer){
+    public void addOffer(PendingServiceOffer pendingServiceOffer){
         pendingServiceOfferRepository.save(pendingServiceOffer);
-        return ResponseEntity.ok().build();
     }
 
     public void deleteOffers(Long ticketId){

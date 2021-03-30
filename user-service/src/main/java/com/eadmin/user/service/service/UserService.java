@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -142,6 +143,53 @@ public class UserService {
 
 
         return response;
+
+    }
+
+    public List<ResponseTemplateVO> getAllProvidersWithReviews(){
+
+        List<ResponseTemplateVO> responseList = new ArrayList<>();
+
+        List<User> providerList = userRepository.findAllByRoles("SERVICE_PROVIDER");
+
+        for(User provider : providerList){
+            ResponseTemplateVO response;
+            response = getProviderWithReviews(provider.getUserId());
+            responseList.add(response);
+
+        }
+
+        return responseList;
+
+    }
+
+    public List<ResponseTemplateVO> getProvidersWithReviewsByTown(String town){
+        List<ResponseTemplateVO> responseList = new ArrayList<>();
+        List<User> providerList = userRepository.findAllByRolesAndTown("SERVICE_PROVIDER", town);
+
+        for(User provider : providerList){
+            ResponseTemplateVO response;
+            response = getProviderWithReviews(provider.getUserId());
+            responseList.add(response);
+
+        }
+
+        return responseList;
+
+    }
+
+    public List<ResponseTemplateVO> getProvidersWithReviewsByTownAndByDepartment(String town, String department){
+        List<ResponseTemplateVO> responseList = new ArrayList<>();
+        List<User> providerList = userRepository.findAllByRolesAndTownAndDepartment("SERVICE_PROVIDER", town, department);
+
+        for(User provider : providerList){
+            ResponseTemplateVO response;
+            response = getProviderWithReviews(provider.getUserId());
+            responseList.add(response);
+
+        }
+
+        return responseList;
 
     }
 

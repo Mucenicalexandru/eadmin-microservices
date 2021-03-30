@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 @RestController
 @RequestMapping("/user")
@@ -38,13 +39,13 @@ public class UserController {
     }
 
     @GetMapping("/providers-by/{town}")
-    public List<User> getProvidersByTown(@PathVariable String town){
-        return userService.getUsersByRoleAndTown("SERVICE_PROVIDER", town);
+    public List<ResponseTemplateVO> getProvidersByTown(@PathVariable String town){
+        return userService.getProvidersWithReviewsByTown(town);
     }
 
     @GetMapping("/providers-by/{town}/{department}")
-    public List<User> getProvidersByTown(@PathVariable String town, @PathVariable String department){
-        return userService.getProvidersByTownAndDepartment(town, department);
+    public List<ResponseTemplateVO> getProvidersByTownAndDepartment(@PathVariable String town, @PathVariable String department){
+        return userService.getProvidersWithReviewsByTownAndByDepartment(town, department);
     }
 
     @GetMapping("/by-group-and-role/{groupId}/{role}")
@@ -65,6 +66,11 @@ public class UserController {
     @GetMapping("/provider-with-reviews/{providerId}")
     public ResponseTemplateVO getProviderWithReviews(@PathVariable Long providerId){
         return userService.getProviderWithReviews(providerId);
+    }
+
+    @GetMapping("/all-providers-with-reviews")
+    public List<ResponseTemplateVO> getAllProvidersWithReviews(){
+        return userService.getAllProvidersWithReviews();
     }
 
     @PostMapping("/")
