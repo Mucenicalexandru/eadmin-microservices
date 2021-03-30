@@ -65,13 +65,6 @@ public class UserService {
         return ResponseEntity.ok().build();
     }
 
-    public List<User> getAllUsersByGroupId(Long groupId){
-        return userRepository.findAllByGroupId(groupId);
-    }
-
-    public List<User> getAllUsersByBuildingId(Long buildingId){
-        return userRepository.findAllByBuildingId(buildingId);
-    }
 
     public User getUserById(Long id){
         return userRepository.findUserByUserId(id);
@@ -194,6 +187,11 @@ public class UserService {
 
         return responseList;
 
+    }
+
+    public void deleteUserById(Long userId){
+        userRepository.deleteById(userId);
+        restTemplate.delete("http://TICKET-SERVICE/ticket/delete-all-by-userId/" + userId);
     }
 
     public void deleteUsersByGroupId(Long groupId){

@@ -126,6 +126,15 @@ public class TicketService {
         return result;
     }
 
+    public void deleteTicketByUserId(Long userId){
+        List<Ticket> ticketsToDelete = ticketRepository.findAllByUserId(userId);
+
+        for(Ticket ticket : ticketsToDelete){
+            ticketRepository.deleteById(ticket.getTicketId());
+            restTemplate.delete("http://PENDINGOFFER-SERVICE/pending-offer/all/" + ticket.getTicketId());
+        }
+    }
+
     public void deleteTicketsByBuildingId(Long buildingId){
         List<Ticket> ticketsToDelete = ticketRepository.findAllByBuildingId(buildingId);
 

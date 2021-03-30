@@ -132,6 +132,11 @@ public class UserController {
         return userService.saveUser(userToUpdate);
     }
 
+    @DeleteMapping("/delete-by-userId/{userId}")
+    public void deleteUserById(@PathVariable Long userId){
+        userService.deleteUserById(userId);
+    }
+
     @DeleteMapping("/delete-by-group/{groupId}")
     public void deleteAllUsersByGroupId(@PathVariable Long groupId){
         userService.deleteUsersByGroupId(groupId);

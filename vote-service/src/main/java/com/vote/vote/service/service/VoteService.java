@@ -28,4 +28,5 @@ public class VoteService {
             voteRepository.deleteById(vote.getVoteId());
         }
     }
+
 }

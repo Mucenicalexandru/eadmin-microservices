@@ -95,6 +95,11 @@ public class TicketController {
         return ticketService.addTicket(ticketToUpdate, "closed");
     }
 
+    @DeleteMapping("/delete-all-by-userId/{userId}")
+    public void deleteAllByUserId(@PathVariable Long userId){
+        ticketService.deleteTicketByUserId(userId);
+    }
+
     @DeleteMapping("/delete-all-by-building/{buildingId}")
     public void deleteAllByBuildingId(@PathVariable Long buildingId){
         ticketService.deleteTicketsByBuildingId(buildingId);
