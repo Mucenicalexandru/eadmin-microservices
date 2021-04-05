@@ -37,6 +37,11 @@ public class GroupController {
         return groupService.getGroupAdministratorAndCensorByGroupId(groupId);
     }
 
+    @GetMapping("/search/{name}")
+    public List<Group> getGroupsByName(@PathVariable String name){
+        return groupService.getGroupByName(name);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Group> addGroup(@RequestBody Group group){
         return groupService.addGroup(group);

@@ -33,6 +33,10 @@ public class GroupService {
         return groupRepository.findAll();
     }
 
+    public List<Group> getGroupByName(String name){
+        return groupRepository.findAllByShortNameContaining(name);
+    }
+
     public Group getGroupById(Long id){
         return groupRepository.getByGroupId(id);
     }

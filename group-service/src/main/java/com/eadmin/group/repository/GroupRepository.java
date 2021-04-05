@@ -11,4 +11,5 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     Group getByGroupId(Long id);
     List<Group> findAllByTown(String town);
+    List<Group> findAllByShortNameContaining(String name);
 }
