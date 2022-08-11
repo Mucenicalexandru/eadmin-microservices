@@ -119,5 +119,4 @@ public class TicketController {
     public void deleteAllByGroupId(@PathVariable Long groupId){
         ticketService.deleteTicketsByGroupId(groupId);
     }
-
 }
