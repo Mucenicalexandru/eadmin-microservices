@@ -8,6 +8,7 @@ import com.eadmin.ticket.service.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -48,7 +49,9 @@ public class TicketService {
         return ticketRepository.findAllByDepartmentAndTownAndStatus(department, town, status);
     }
 
-
+    public List<Ticket> getWonTicketsByServiceProvider(Long serviceProviderId, String status){
+        return ticketRepository.findAllByAssignedServiceProviderUserIdAndStatus(serviceProviderId, status);
+    }
 
     public ResponseEntity<Ticket> addTicket(Ticket ticket, String status){
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -104,6 +107,20 @@ public class TicketService {
         return result;
     }
 
+    public List<ResponseTemplateVO> getTicketsByUserIdAndStatusWithPendingOffers(Long userId, String status, String type){
+        List<ResponseTemplateVO> result = new ArrayList<>();
+
+        List<Ticket> ticketList = ticketRepository.findAllByUserIdAndStatusAndType(userId, status, type);
+
+        for(Ticket ticket : ticketList){
+            ResponseTemplateVO vo = new ResponseTemplateVO();
+            vo.setTicket(ticket);
+            vo.setPendingOffer(restTemplate.getForObject("http://PENDINGOFFER-SERVICE/pending-offer/" + ticket.getTicketId(), PendingOffer[].class));
+            result.add(vo);
+        }
+
+        return result;
+    }
 
     public ResponseTemplateVO getTicketByIdWithPendingOfferInfo(Long ticketId){
         ResponseTemplateVO result = new ResponseTemplateVO();

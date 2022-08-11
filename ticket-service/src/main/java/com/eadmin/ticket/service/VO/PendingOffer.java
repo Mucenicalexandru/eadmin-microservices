@@ -12,6 +12,7 @@ import java.sql.Date;
 @NoArgsConstructor
 public class PendingOffer {
 
+    private Long pendingServiceOfferId;
     private Long ticketId;
     private Long serviceProviderUserId;
     private int serviceProviderPrice;

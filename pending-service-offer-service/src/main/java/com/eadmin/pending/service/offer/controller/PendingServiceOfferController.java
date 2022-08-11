@@ -31,4 +31,8 @@ public class PendingServiceOfferController {
         pendingServiceOfferService.deleteOffers(ticketId);
     }
 
+    @DeleteMapping("/reject-pending_service_offer/{pendingServiceOfferId}")
+    public void rejectPendingServiceOffer(@PathVariable Long pendingServiceOfferId){
+        pendingServiceOfferService.deleteSingleOffer(pendingServiceOfferId);
+    }
 }

@@ -30,6 +30,9 @@ public class PendingServiceOfferService {
         }
     }
 
+    public void deleteSingleOffer(Long pendingServiceOfferId){
+        pendingServiceOfferRepository.deleteById(pendingServiceOfferId);
+    }
 
 
 }

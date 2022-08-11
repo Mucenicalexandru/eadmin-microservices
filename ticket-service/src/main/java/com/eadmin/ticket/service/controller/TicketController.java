@@ -68,6 +68,16 @@ public class TicketController {
         return ticketService.getTicketsByGroupAndStatusWithPendingOffers(groupId, status, "Administrative");
     }
 
+    @GetMapping("/all-by-user-with-pending-offers/{userId}/{status}")
+    public List<ResponseTemplateVO> getTicketsByUserIdAndStatusWithPendingOffers(@PathVariable Long userId, @PathVariable String status){
+        return ticketService.getTicketsByUserIdAndStatusWithPendingOffers(userId, status, "Personal");
+    }
+
+    @GetMapping("/assigned-service-provider/{serviceProviderId}/{status}")
+    public List<Ticket> getWonTickets(@PathVariable Long serviceProviderId, @PathVariable String status){
+        return ticketService.getWonTicketsByServiceProvider(serviceProviderId, status);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Ticket> addTicket(@RequestBody Ticket ticket){
         return ticketService.addTicket(ticket, "opened");
