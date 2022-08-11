@@ -115,6 +115,7 @@ public class TicketController {
         ticketService.deleteTicketsByBuildingId(buildingId);
     }
 
+
     @DeleteMapping("/delete-all-by-group/{groupId}")
     public void deleteAllByGroupId(@PathVariable Long groupId){
         ticketService.deleteTicketsByGroupId(groupId);
