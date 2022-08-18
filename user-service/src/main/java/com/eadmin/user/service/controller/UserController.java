@@ -1,8 +1,10 @@
 package com.eadmin.user.service.controller;
 
 import com.eadmin.user.service.VO.ResponseTemplateVO;
+import com.eadmin.user.service.model.Department;
 import com.eadmin.user.service.model.User;
 import com.eadmin.user.service.model.UserStatus;
+import com.eadmin.user.service.service.DepartmentService;
 import com.eadmin.user.service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DepartmentService departmentService;
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id){
@@ -71,6 +76,11 @@ public class UserController {
     @GetMapping("/all-providers-with-reviews")
     public List<ResponseTemplateVO> getAllProvidersWithReviews(){
         return userService.getAllProvidersWithReviews();
+    }
+
+    @GetMapping("/departments")
+    public List<Department> getAllDepartments(){
+        return departmentService.getAll();
     }
 
     @PostMapping("/")

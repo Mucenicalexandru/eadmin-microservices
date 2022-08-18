@@ -27,6 +27,9 @@ public class UserService {
     @Autowired
     private RestTemplate restTemplate;
 
+    private final static String PRESIDENT = "PRESIDENT";
+    private final static String USER = "USER";
+
     private final PasswordEncoder passwordEncoder;
 
     public UserService(){
@@ -41,7 +44,7 @@ public class UserService {
             user.setPassword(password);
 
 
-            if (userRole.equals("USER")) {
+            if (userRole.equals(USER)) {
                 user.setUserStatus(UserStatus.PENDING);
                 user.getRoles().add(userRole);
             } else {
@@ -60,7 +63,12 @@ public class UserService {
         String password = passwordEncoder.encode("1111");
         user.setPassword(password);
         user.setUserStatus(UserStatus.ACCEPTED);
-        user.getRoles().add(userRole);
+        if(userRole.equals(PRESIDENT)){
+            user.getRoles().add(userRole);
+            user.getRoles().add(USER);
+        }else{
+            user.getRoles().add(userRole);
+        }
         userRepository.save(user);
         return ResponseEntity.ok().build();
     }
